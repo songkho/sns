@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "223943981298",
+    "firebase_url": "https://sns-idh.firebaseio.com",
+    "project_id": "sns-idh",
+    "storage_bucket": "sns-idh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223943981298:android:cf170ed91c681b89be786b",
+        "android_client_info": {
+          "package_name": "com.idh.sns"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223943981298-b9hkr5e4dm3mvp7k8al8bk54r6a8jdh8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.idh.sns",
+            "certificate_hash": "239be912addbdacd52be348fac55069fbe529770"
+          }
+        },
+        {
+          "client_id": "223943981298-1572fhr515vkr2ubms903n5t61kl8uhj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMZ4zXbm8b0-gzctovhbdYXO8CukNzkpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223943981298-1572fhr515vkr2ubms903n5t61kl8uhj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
