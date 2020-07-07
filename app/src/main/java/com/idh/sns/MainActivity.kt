@@ -14,6 +14,8 @@ import com.idh.sns.WriteActivity.MyAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_write.*
 import kotlinx.android.synthetic.main.card_background.view.*
+import kotlinx.android.synthetic.main.card_background.view.imageView
+import kotlinx.android.synthetic.main.card_post.view.*
 
 class MainActivity : AppCompatActivity() {
 
