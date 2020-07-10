@@ -1,19 +1,23 @@
 package com.idh.sns
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
-import com.idh.sns.WriteActivity.MyAdapter
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_write.*
-import kotlinx.android.synthetic.main.card_background.view.*
 import kotlinx.android.synthetic.main.card_background.view.imageView
 import kotlinx.android.synthetic.main.card_post.view.*
 
@@ -54,6 +58,9 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = MyAdapter()
+
+
+
 
         FirebaseDatabase.getInstance().getReference("/Posts")
             .orderByChild("writeTime").addChildEventListener(object : ChildEventListener{
@@ -160,5 +167,45 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
+    //2020.07.08
+
+    inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
+            return MyViewHolder(LayoutInflater.from(this@MainActivity).inflate(R.layout.card_post,parent, false))
+        }
+
+        override fun getItemCount(): Int {
+
+            return posts.size
+        }
+
+        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
+
+            val post = posts[position]
+
+            Picasso.get().load(Uri.parse(post.bgUri)).fit().centerCrop().into(holder.imageView)
+
+            holder.contentsText.text = post.message
+
+            holder.timeTextView.text = getDiffTimeText(post.writeTime as Long)
+
+            holder.commentCountText.text = "0"
+
+
+        }
+
+    }
+
+    // 2020.07.10
+    private fun getDiffTimeText(targetTime : Long): String {
+
+        val curDate
+
+    }
+
 
 }
