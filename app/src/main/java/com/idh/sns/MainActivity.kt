@@ -30,15 +30,13 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
 
-
-
     // 글 목록을 저장하는 변수
     val posts: MutableList<Post> = mutableListOf()
 
 
-    val TAG = "MainActivity"
-
-    val ref = FirebaseDatabase.getInstance().getReference("test")
+//    val TAG = "MainActivity"
+//
+//    val ref = FirebaseDatabase.getInstance().getReference("test")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
         val layoutManager = LinearLayoutManager(this@MainActivity)
 
 
@@ -62,26 +59,30 @@ class MainActivity : AppCompatActivity() {
 
         layoutManager.stackFromEnd = true
 
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = MyAdapter()
+
+
+        recyclerView?.layoutManager = layoutManager
+
+
+        recyclerView?.adapter = MyAdapter()
 
 
 
 
         FirebaseDatabase.getInstance().getReference("/Posts")
-            .orderByChild("writeTime").addChildEventListener(object : ChildEventListener{
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildKey: String?) {
+            .orderByChild("writeTime").addChildEventListener(object : ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, prevChildKey: String?) {
 
-                    snapshot?.let { snapshot->
+                    snapshot?.let { snapshot ->
                         val post = snapshot.getValue(Post::class.java)
                         post?.let {
-                            if (previousChildKey == null){
+                            if (prevChildKey == null) {
                                 posts.add(it)
                                 recyclerView.adapter?.notifyItemInserted(posts.size - 1)
 
-                            }else{
-                                val prevIndex = posts.map { it.postId }.indexOf(previousChildKey)
-                                posts.add(prevIndex + 1 , post)
+                            } else {
+                                val prevIndex = posts.map { it.postId }.indexOf(prevChildKey)
+                                posts.add(prevIndex + 1, post)
 
                                 recyclerView.adapter?.notifyItemInserted(prevIndex + 1)
                             }
@@ -106,10 +107,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
 
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildKey: String?) {
+                override fun onChildMoved(snapshot: DataSnapshot, prevChildKey: String?) {
 
                     snapshot?.let {
-                        val post = snapshot.getValue(Post :: class.java)
+                        val post = snapshot.getValue(Post::class.java)
 
                         post?.let { post ->
 
@@ -117,13 +118,13 @@ class MainActivity : AppCompatActivity() {
                             posts.removeAt(existIndex)
                             recyclerView.adapter?.notifyItemRemoved(existIndex)
 
-                            if (previousChildKey == null){
+                            if (prevChildKey == null) {
                                 posts.add(post)
                                 recyclerView.adapter?.notifyItemChanged(posts.size - 1)
 
-                            }else{
-                                val prevIndex = posts.map { it.postId }.indexOf(previousChildKey)
-                                posts.add(prevIndex + 1 , post)
+                            } else {
+                                val prevIndex = posts.map { it.postId }.indexOf(prevChildKey)
+                                posts.add(prevIndex + 1, post)
                                 recyclerView.adapter?.notifyItemChanged(prevIndex + 1)
                             }
 
@@ -155,21 +156,18 @@ class MainActivity : AppCompatActivity() {
             })
 
 
-
-
     }
 
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val imageView: ImageView = itemView.imageView
 
         val contentsText: TextView = itemView.contentsText
 
-        val timeTextView : TextView = itemView.timeTextView
+        val timeTextView: TextView = itemView.timeTextView
 
-        val commentCountText : TextView = itemView.commentCountText
-
+        val commentCountText: TextView = itemView.commentCountText
 
 
     }
@@ -177,10 +175,12 @@ class MainActivity : AppCompatActivity() {
 
     //2020.07.08
 
-    inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>(){
+    inner class MyAdapter : RecyclerView.Adapter<MyViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-            return MyViewHolder(LayoutInflater.from(this@MainActivity).inflate(R.layout.card_post,parent, false))
+            return MyViewHolder(
+                LayoutInflater.from(this@MainActivity).inflate(R.layout.card_post, parent, false)
+            )
         }
 
         override fun getItemCount(): Int {
@@ -217,26 +217,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 2020.07.1099
-    private fun getDiffTimeText(targetTime : Long): String {
+    private fun getDiffTimeText(targetTime: Long): String {
 
-        val curDateTime  = DateTime()
+        val curDateTime = DateTime()
         val targetDateTime = DateTime().withMillis(targetTime)
         val diffDay = Days.daysBetween(curDateTime, targetDateTime).days
         val diffHours = Hours.hoursBetween(targetDateTime, curDateTime).hours
         val diffMinutes = Minutes.minutesBetween(targetDateTime, curDateTime).minutes
-        if (diffDay == 0){
-            if (diffDay == 0 && diffMinutes == 0){
+        if (diffDay == 0) {
+            if (diffDay == 0 && diffMinutes == 0) {
 
                 return "방금 전"
             }
-            return if (diffHours > 0 ){
+            return if (diffHours > 0) {
                 "" + diffHours + "시간 전"
 
-            }else ""+ diffMinutes + "분 전"
+            } else "" + diffMinutes + "분 전"
 
-            }else{
+        } else {
             val format = SimpleDateFormat("yyyy년 MM월 dd일 HH:mm")
-            return  format.format(Date(targetTime))
+            return format.format(Date(targetTime))
         }
 
 
